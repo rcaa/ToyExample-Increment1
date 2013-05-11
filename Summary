@@ -1,0 +1,14 @@
+Drawbacks (Annotation-Pointcut-LayeredAspects):
+
+ - The empty concrete aspect for static BT is mandatory to enable the feature code. 
+ - The adviceexecution idiom is not generic enough
+   - It is mandatory to redine all pointcuts related to around advice explicitly declared
+     in the abstract aspect.
+ - Manually mark/annotate/idenfify all around advice in the abstract aspect using a custom
+   Java 5 annotation.
+    
+ Benefits of Annotation-Pointcut-LayeredAspects over (LA and If-Pointcut-LA):
+ 
+  + Better source code/bytecode instrumentation and performance.
+    + The adviceexecution idiom excludes non-around advice from feature activation/deactivation.
+      They are performed by the if pointcuts provided by the redefined pointcuts.

@@ -1,0 +1,44 @@
+LayeredAspects (Annotation-Pointcut-LayeredAspects)
+
+  (1) Code locality - (low)
+    + driver still localized.
+    - see the scattered annotations 
+      in the type Quote. These annotations are part of the Annotation-Pointcut-LA idiom.
+    - pointcuts related to around in Quote should be 
+      redifined/duplicated in QuoteDynamic (they are duplicated in two places).
+      
+  (2) Reusability - (low)
+      + The adviceexecution used in the LA idiom is reused since it 
+        applies to all proper advice (excluding the around ones) to check 
+        the driver condition.
+      - but the redifined ptc refer to specific feature join points that are 
+        used by specific around advice.
+      - so, redifined ptc cannot be reused to all applications. Hence, compromising
+        the overall idiom reusability.
+        
+   (3) Changeability - (low)
+      - All pointcuts defined in Quote (for example) need to be redefined in QuoteDynamic.
+      - All the around advice declarations should have a metada annotation to identify them.
+      - If the application is being modified to support different binding time with 
+        (If-Pointcut-LayeredAspects), we need to change the aspect code related to the 
+        feature modularization (like Quote) to support the pointcut redefinition.
+        In addition, all around advice should be marked with a custom metada annotation.
+        As a result, all the pointcuts to be redefined needs to be redefined in 
+        QuoteDynamic. This requires a lot of change.
+        
+   (4) Plugabbility - (no)
+       - In addition to remove the QuoteDynamic from the build, we need to remove the custom
+         metadata annotation from all around defined in the feature code modularization like Quote.
+       
+   (5) Code instrumentation/overhead (low)
+        + The good news is that with the use of metadata annotation to identify all the around advice
+          we can exclude them from the adviceexecution using the annotation-pointcut 
+          !@annotation(AroundAdvice). This is necessary since the if-pointcut by pointcut
+          redefinition already handles the driver condition over all around advice.
+          
+        + If we can exclude all the unecessary instrumentation, we gain in execution time
+          due to the less instrumentation provided by the AspectJ compiler.
+      
+        
+
+ 
